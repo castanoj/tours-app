@@ -1,41 +1,38 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Loading from './components/Loading';
 import Tours from './components/Tours';
-// ATTENTION!!!!!!!!!!
-// I SWITCHED TO PERMANENT DOMAIN
+import { Container } from 'react-bootstrap';
+
 const url = 'https://course-api.com/react-tours-project';
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [tours, setTours] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
+
+  const fetchTours = async () => {
+    try {
+      const response = await fetch(url);
+      const tours = await response.json();
+
+      setTours(tours);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   const removeTour = id => {
     const newTours = tours.filter(tour => tour.id !== id);
     setTours(newTours);
   };
 
-  const fetchTours = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(url);
-      const tours = await response.json();
-      setLoading(false);
-      setTours(tours);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchTours();
-  }, []);
-  if (loading) {
-    return (
-      <main>
-        <Loading />
-      </main>
-    );
-  }
   if (tours.length === 0) {
     return (
       <main>
@@ -48,10 +45,17 @@ function App() {
       </main>
     );
   }
+
   return (
-    <main>
-      <Tours tours={tours} removeTour={removeTour} />
-    </main>
+    <Container>
+      <main>
+        {loading ? (
+          <Loading />
+        ) : (
+          <Tours tours={tours} removeTour={removeTour} />
+        )}
+      </main>
+    </Container>
   );
 }
 

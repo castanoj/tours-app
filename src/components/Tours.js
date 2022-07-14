@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Tour from './Tour';
 
 const Tours = ({ tours, removeTour }) => {
@@ -8,7 +9,8 @@ const Tours = ({ tours, removeTour }) => {
         <h2>Ours Tours</h2>
         <div className="underline"></div>
       </div>
-      <div>
+
+      <div className="tours-v">
         {tours.map(tour => {
           return <Tour key={tour.id} {...tour} removeTour={removeTour}></Tour>;
         })}
