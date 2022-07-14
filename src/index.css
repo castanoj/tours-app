@@ -95,6 +95,11 @@
       line-height: 1;
     }
   }
+
+  .loading {
+    text-align: center;
+    margin: 0 auto;
+  }
   @media screen and (min-width: 950px) {
    
     .tours-v{
